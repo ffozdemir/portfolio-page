@@ -37,25 +37,13 @@ const socials: SocialLink[] = [
 ];
 
 const Header = (): ReactElement => {
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    const targetId: string | undefined = event.currentTarget
-      .getAttribute("href")
-      ?.substring(1);
-    const targetElement: HTMLElement | null = document.getElementById(
-      targetId || ""
-    );
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  
   return (
     <Box
       position="fixed"
       top={0}
       left={0}
       right={0}
-      translateY={0}
       transitionProperty="transform"
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
@@ -84,10 +72,10 @@ const Header = (): ReactElement => {
           </nav>
           <nav>
             <HStack gap={4}>
-              <a href="#projects-section" onClick={handleClick}>
+              <a href="#projects-section" >
                 Projects
               </a>
-              <a href="#contact-me" onClick={handleClick}>
+              <a href="#contact-me" >
                 Contact Me
               </a>
             </HStack>

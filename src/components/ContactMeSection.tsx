@@ -54,29 +54,34 @@ const ContactMeSection = () => {
         formik.resetForm();
       }
     }
-  }, [response]);
+  }, [response, onOpen]);
 
   return (
     <FullScreenSection
       isDarkBackground
       backgroundColor="#512DA8"
-      py={16}
-      spacing={8}
+      py={{ base: 8, md: 16 }}
+      id="contact-me"
     >
-      <VStack w="1024px" p={32} alignItems="flex-start">
-        <Heading as="h1" id="contact-me">
+      <VStack
+        gap={8}
+        alignItems="flex-start"
+        w={{ base: "300px", md: "600px" }}
+      >
+        <Heading as="h1" size={{ base: "2xl", md: "3xl" }} color="white">
           Contact me
         </Heading>
-        <Box p={6} rounded="md" w="100%">
-          <form onSubmit={formik.handleSubmit}>
-            <Fieldset.Root size="lg">
-              <Fieldset.Legend>Contact Information</Fieldset.Legend>
+
+        <Box p={{ base: 4, md: 6 }} rounded="md" w="full" mx="auto">
+          <form onSubmit={formik.handleSubmit} noValidate>
+            <Fieldset.Root size={{ base: "md", md: "lg" }} w="full">
               <Fieldset.Content>
-                <VStack gap={6}>
+                <VStack gap={{ base: 4, md: 6 }} w="full">
                   <Field.Root
                     invalid={
                       !!(formik.touched.firstName && formik.errors.firstName)
                     }
+                    w="full"
                   >
                     <Field.Label htmlFor="firstName">Name</Field.Label>
                     <Input
@@ -86,6 +91,7 @@ const ContactMeSection = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter your name"
+                      size={{ base: "md", md: "lg" }}
                     />
                     {formik.touched.firstName && formik.errors.firstName && (
                       <Field.ErrorText>
@@ -96,6 +102,7 @@ const ContactMeSection = () => {
 
                   <Field.Root
                     invalid={!!(formik.touched.email && formik.errors.email)}
+                    w="full"
                   >
                     <Field.Label htmlFor="email">Email Address</Field.Label>
                     <Input
@@ -106,17 +113,26 @@ const ContactMeSection = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter your email"
+                      size={{ base: "md", md: "lg" }}
                     />
                     {formik.touched.email && formik.errors.email && (
                       <Field.ErrorText>{formik.errors.email}</Field.ErrorText>
                     )}
                   </Field.Root>
 
-                  <Field.Root>
+                  <Field.Root
+                    invalid={
+                      !!(
+                        formik.touched.typeOfInquiry &&
+                        formik.errors.typeOfInquiry
+                      )
+                    }
+                    w="full"
+                  >
                     <Field.Label htmlFor="typeOfInquiry">
                       Type of enquiry
                     </Field.Label>
-                    <NativeSelect.Root>
+                    <NativeSelect.Root size={{ base: "md", md: "lg" }}>
                       <NativeSelect.Field
                         id="typeOfInquiry"
                         name="typeOfInquiry"
@@ -137,12 +153,19 @@ const ContactMeSection = () => {
                       </NativeSelect.Field>
                       <NativeSelect.Indicator />
                     </NativeSelect.Root>
+                    {formik.touched.typeOfInquiry &&
+                      formik.errors.typeOfInquiry && (
+                        <Field.ErrorText>
+                          {formik.errors.typeOfInquiry}
+                        </Field.ErrorText>
+                      )}
                   </Field.Root>
 
                   <Field.Root
                     invalid={
                       !!(formik.touched.message && formik.errors.message)
                     }
+                    w="full"
                   >
                     <Field.Label htmlFor="message">Your message</Field.Label>
                     <Textarea
@@ -152,8 +175,9 @@ const ContactMeSection = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter your message"
-                      height={250}
+                      height={{ base: 200, md: 250 }}
                       resize="vertical"
+                      size={{ base: "md", md: "lg" }}
                     />
                     {formik.touched.message && formik.errors.message && (
                       <Field.ErrorText>{formik.errors.message}</Field.ErrorText>
@@ -167,6 +191,8 @@ const ContactMeSection = () => {
                     loading={isLoading}
                     loadingText="Submitting..."
                     disabled={!formik.isValid || formik.isSubmitting}
+                    size={{ base: "lg", md: "xl" }}
+                    mt={{ base: 2, md: 4 }}
                   >
                     Submit
                   </Button>

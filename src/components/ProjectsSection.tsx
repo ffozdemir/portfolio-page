@@ -45,11 +45,12 @@ const ProjectsSection = () => {
     <FullScreenSection
       backgroundColor="#14532d"
       isDarkBackground
-      p={8}
+      p={12}
       alignItems="flex-start"
-      spacing={8}
+      gap={8}
+      id="projects-section"
     >
-      <Heading as="h1" id="projects-section" size="4xl" color="white">
+      <Heading as="h1" size="4xl" color="white">
         Featured Projects
       </Heading>
       <Box

@@ -8,7 +8,6 @@ const Footer = () => {
       left={0}
       right={0}
       width="100%"
-      translateY={0}
       zIndex={10}
       backgroundColor="#18181b"
     >
