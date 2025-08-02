@@ -1,5 +1,5 @@
 import { Box, HStack } from "@chakra-ui/react";
-import type { ReactElement } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
 import {
   FaEnvelope,
   FaGithub,
@@ -37,7 +37,25 @@ const socials: SocialLink[] = [
 ];
 
 const Header = (): ReactElement => {
-  
+  const [transform, setTransform] = useState("translateY(0)");
+  const prevScrollY: React.RefObject<number> = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = (): void => {
+      const currentScrollY: number = window.scrollY;
+      if (currentScrollY > prevScrollY.current) {
+        setTransform("translateY(-200px)");
+      } else {
+        setTransform("translateY(0)");
+      }
+      prevScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Box
       position="fixed"
@@ -48,6 +66,7 @@ const Header = (): ReactElement => {
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#18181b"
+      transform={transform}
     >
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
@@ -72,12 +91,8 @@ const Header = (): ReactElement => {
           </nav>
           <nav>
             <HStack gap={4}>
-              <a href="#projects-section" >
-                Projects
-              </a>
-              <a href="#contact-me" >
-                Contact Me
-              </a>
+              <a href="#projects-section">Projects</a>
+              <a href="#contact-me">Contact Me</a>
             </HStack>
           </nav>
         </HStack>
