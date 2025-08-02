@@ -1,28 +1,23 @@
 import { useAlertContext } from "@/context/alertContext";
 import { Alert } from "./ui/alert";
+import { Box } from "@chakra-ui/react";
 
 const AlertComponent = () => {
-  const { isOpen, type, message } = useAlertContext();
+  const { isOpen, type, message, onClose } = useAlertContext();
+
+  if (!isOpen) return null;
 
   return (
-    <Alert
-      isOpen={isOpen}
-      type={type}
-      title={type === "success" ? "Success!" : "Error!"}
-      startElement={
-        type === "success" ? (
-          <span role="img" aria-label="Success">
-            ✅
-          </span>
-        ) : (
-          <span role="img" aria-label="Error">
-            ❌
-          </span>
-        )
-      }
-    >
-      {message}
-    </Alert>
+    <Box position="fixed"  right="20" top="20"  zIndex="toast" >
+      <Alert
+        status={type}
+        title={type === "success" ? "Success!" : "Error!"}
+        onClose={onClose}
+        position="relative"
+      >
+        {message}
+      </Alert>
+    </Box>
   );
 };
 

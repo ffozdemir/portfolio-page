@@ -1,9 +1,8 @@
-import { useAlertContext } from "@/context/alertContext";
 import useSubmit from "@/hooks/useSubmit";
 import type { ContactFormDataType } from "@/types";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import FullScreenSection from "./FullScreenSection";
 import {
   Box,
@@ -16,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Field } from "@chakra-ui/react/field";
 import { NativeSelect } from "@chakra-ui/react/native-select";
+import { useAlertContext } from "@/context/alertContext";
 
 const ContactMeSection = () => {
   const { isLoading, response, submit } = useSubmit();
@@ -25,7 +25,7 @@ const ContactMeSection = () => {
     initialValues: {
       firstName: "",
       email: "",
-      typeOfInquiry: "hireMe",
+      typeOfInquiry: "",
       message: "",
     },
     onSubmit: async (values, { resetForm }) => {
@@ -50,8 +50,11 @@ const ContactMeSection = () => {
   useEffect(() => {
     if (response) {
       onOpen(response.type, response.message);
+      if (response.type === "success") {
+        formik.resetForm();
+      }
     }
-  }, [response, onOpen]);
+  }, [response]);
 
   return (
     <FullScreenSection
@@ -61,7 +64,7 @@ const ContactMeSection = () => {
       spacing={8}
     >
       <VStack w="1024px" p={32} alignItems="flex-start">
-        <Heading as="h1" id="contactme-section">
+        <Heading as="h1" id="contact-me">
           Contact me
         </Heading>
         <Box p={6} rounded="md" w="100%">
@@ -69,13 +72,13 @@ const ContactMeSection = () => {
             <Fieldset.Root size="lg">
               <Fieldset.Legend>Contact Information</Fieldset.Legend>
               <Fieldset.Content>
-                <VStack spacing={6}>
+                <VStack gap={6}>
                   <Field.Root
                     invalid={
                       !!(formik.touched.firstName && formik.errors.firstName)
                     }
                   >
-                    <Field.Label>Name</Field.Label>
+                    <Field.Label htmlFor="firstName">Name</Field.Label>
                     <Input
                       id="firstName"
                       name="firstName"
@@ -94,7 +97,7 @@ const ContactMeSection = () => {
                   <Field.Root
                     invalid={!!(formik.touched.email && formik.errors.email)}
                   >
-                    <Field.Label>Email Address</Field.Label>
+                    <Field.Label htmlFor="email">Email Address</Field.Label>
                     <Input
                       id="email"
                       name="email"
@@ -110,7 +113,9 @@ const ContactMeSection = () => {
                   </Field.Root>
 
                   <Field.Root>
-                    <Field.Label>Type of enquiry</Field.Label>
+                    <Field.Label htmlFor="typeOfInquiry">
+                      Type of enquiry
+                    </Field.Label>
                     <NativeSelect.Root>
                       <NativeSelect.Field
                         id="typeOfInquiry"
@@ -119,6 +124,9 @@ const ContactMeSection = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       >
+                        <option value="" disabled>
+                          Select an option
+                        </option>
                         <option value="hireMe">
                           Freelance project proposal
                         </option>
@@ -136,7 +144,7 @@ const ContactMeSection = () => {
                       !!(formik.touched.message && formik.errors.message)
                     }
                   >
-                    <Field.Label>Your message</Field.Label>
+                    <Field.Label htmlFor="message">Your message</Field.Label>
                     <Textarea
                       id="message"
                       name="message"
@@ -158,6 +166,7 @@ const ContactMeSection = () => {
                     width="full"
                     loading={isLoading}
                     loadingText="Submitting..."
+                    disabled={!formik.isValid || formik.isSubmitting}
                   >
                     Submit
                   </Button>

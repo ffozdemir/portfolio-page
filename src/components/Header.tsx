@@ -69,7 +69,7 @@ const Header = (): ReactElement => {
           alignItems="center"
         >
           <nav>
-            <HStack spacing={8}>
+            <HStack gap="{5}">
               {socials.map((social: SocialLink) => (
                 <a
                   key={social.url}
@@ -83,7 +83,7 @@ const Header = (): ReactElement => {
             </HStack>
           </nav>
           <nav>
-            <HStack spacing={8}>
+            <HStack gap={4}>
               <a href="#projects-section" onClick={handleClick}>
                 Projects
               </a>

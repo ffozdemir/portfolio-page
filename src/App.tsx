@@ -14,9 +14,9 @@ function App() {
         <Header />
         <LandingSection />
         <ProjectsSection />
+        <AlertComponent />
         <ContactMeSection />
         <Footer />
-        <AlertComponent />
       </main>
     </AlertProvider>
   );

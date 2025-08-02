@@ -7,18 +7,18 @@ import {
 } from "react";
 
 export type AlertContextType = {
-  type: "success" | "error" ;
+  type?: "success" | "error";
   isOpen: boolean;
   message: string;
   onOpen: (type: "success" | "error", message: string) => void;
   onClose: () => void;
 };
 
-const AlertContext = createContext<AlertContextType | undefined>(undefined);
-
 type AlertProviderProps = {
   children: ReactNode;
 };
+
+const AlertContext = createContext<AlertContextType | undefined>(undefined);
 
 export const AlertProvider = ({ children }: AlertProviderProps) => {
   const [state, setState] = useState<Partial<AlertContextType>>({
@@ -34,7 +34,7 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
   };
 
   const onClose = () => {
-    setState({ isOpen: false, type: "", message: "" });
+    setState({ isOpen: false, message: "" });
   };
 
   const value = useMemo(
@@ -44,7 +44,7 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
         onOpen,
         onClose,
       } as AlertContextType),
-    [state]
+    [ state.type, state.message]
   );
 
   return (
@@ -52,4 +52,12 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
   );
 };
 
-export const useAlertContext = () => useContext(AlertContext);
+export const useAlertContext = () => {
+  const context = useContext(AlertContext);
+  if (context === undefined) {
+    throw new Error(
+      "Error accured: useAlertContext must be used within an AlertProvider"
+    );
+  }
+  return context;
+};
